@@ -1,0 +1,110 @@
+* NIX LANG
+
+** nixcloud.io
+
+*** Variables
+
+#+BEGIN_SRC nix
+let
+  var = "variable value"
+  more-var = ''
+  this is 
+  a multiline
+  variable ''
+  someothervalue = "some other values"
+in
+{
+  something = var + someothervalue
+}
+#+END_SRC
+
+: The value of "something" becomes "variable valuesome other values"
+
+*** String manipulation
+
+#+BEGIN_SRC nix
+let 
+  name = "john";
+in
+{
+  welcome = "Hi ${name} ";
+}
+#+END_SRC
+
+: The value of "welcome" is "Hi John"
+
+*** Integer in string
+
+#+BEGIN_SRC nix
+let 
+  value = 1;
+in
+{
+  string = "${toString value} is the loneliest number";
+}
+#+END_SRC
+
+: the value of "string" is "1 is the loneliest number"
+
+*** Functions and attributes
+
+#+BEGIN_SRC nix
+let
+  func = a: b: a + b;
+in
+{
+  output = func "Walter" "White"
+}
+#+END_SRC
+
+: The value of "output" is "WalterWhite"
+
+*** Functions with sets as attributes
+
+#+BEGIN_SRC nix
+let
+  func = {a, b}: a + b;
+in
+{
+  output = func {a = "Walter"; b = "White";}
+}
+#+END_SRC
+
+: The value of "output" is "WalterWhite"
+
+*** If else
+
+insert this
+#+BEGIN_SRC nix
+if <some condition> then <some rule> else <somerule>;
+#+END_SRC
+
+*** Function default values
+
+#+BEGIN_SRC nix
+let
+  func = {a ? "Sky " , b , c }: a+b+c;
+in
+rec {
+  output = func {b="full of "; c="stars";};
+}
+#+END_SRC
+
+: the value of "output" is "Sky full of stars"
+
+*** Functions with "@"
+
+#+BEGIN_SRC nix
+let
+  func = someword@{a,b, ...}: a + b + someword.c;
+in
+{
+  output = func {a = "Spy "; b = "sappin' "; c = "my sentry";};
+}
+#+END_SRC
+
+: the value of "output" is "Spy sappin' my sentry"
+
+*NOTE* =someword@{a,b, ...}= can also be written as ={a, b, ...}@someword=
+
+*NOTE* =...= is called *ellipsis*
